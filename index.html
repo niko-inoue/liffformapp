@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>予約管理</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="https://string.ni-ko.com/reservation/jquery.ui.theme.css" />
+<script type="text/javascript" src="https://string.ni-ko.com/reservation/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="https://string.ni-ko.com/reservation/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="https://string.ni-ko.com/reservation/jquery.ui.datepicker.min.js"></script>
+<script type="text/javascript" src="https://string.ni-ko.com/reservation/jquery.ui.datepicker-ja.js"></script>
+<script type="text/javascript" src="https://string.ni-ko.com/reservation/datepicker.js"></script>
+</head>
+<body>
+<form class="w-75 mx-auto">
+<p class="mt-3">お名前</p>
+<div>
+<input class="form-control w-100 mt-1" name="name" placeholder="" required>
+</div>
+<p class="mt-3">予約日時</p>
+<input class="input-text"  type="text" name="ご予約ご希望日" id="datepicker1" placeholder="ご希望日を選択してください" readonly />
+<br>
+<select name="来店希望時間">
+<option value="13時">13時</option>
+<option value="14時">14時</option>
+<option value="15時">15時</option>
+<option value="16時">16時</option>
+<option value="17時">17時</option>
+<option value="18時">18時</option>
+<option value="19時">19時</option>
+<option value="20時">20時</option>
+<option value="21時">21時</option>
+<option value="22時">22時</option>
+<option value="23時">23時</option>
+</select>
+</div>
+<p class="mt-3">ラケット本数</p>
+<div>
+<select name="raclet">
+<option value="1本">1本</option>
+<option value="2本">2本</option>
+<option value="3本">3本</option>
+<option value="4本">4本</option>
+<option value="5本">5本</option>
+</select>
+</div>
+<p class="mt-3">ガット</p>
+<div>
+<select name="string">
+<option value="BG66アルティマックス">BG66アルティマックス</option>
+<option value="ナノジー95">ナノジー95</option>
+<option value="強チタン">強チタン</option>
+<option value="エクスボルト63">エクスボルト63</option>
+<option value="G-TONE5">G-TONE5</option>
+<option value="G-TONE9">G-TONE9</option>
+<option value="わからないので相談">わからないので相談</option>
+</select>
+</div>
+<p class="mt-3">テンション</p>
+<div>
+<select name="tension">
+<option value="20lbs">20lbs</option>
+<option value="21lbs">21lbs</option>
+<option value="22lbs">22lbs</option>
+<option value="23lbs">23lbs</option>
+<option value="24lbs">24lbs</option>
+<option value="25lbs">25lbs</option>
+<option value="26lbs">26lbs</option>
+<option value="27lbs">27lbs</option>
+<option value="28lbs">28lbs</option>
+<option value="29lbs">29lbs</option>
+<option value="30lbs">30lbs</option>
+<option value="わからないので相談">わからないので相談</option>
+</select>
+</div>
+<input type="submit" class="mt-4 btn btn-primary" value="送信">
+</form>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script> 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script> 
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script> 
+<script>
+
+        $(document).ready(function () {
+            const liffId = "2000012125-PNejwYjk";
+            initializeLiff(liffId);
+        })
+
+        function initializeLiff(liffId) {
+            liff.init({
+                liffId: liffId
+            }).then(() => {
+                initializeApp();
+            }).catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
+
+        function sendText(text) {
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+        }
+
+        const params = (new URL(document.location)).searchParams;
+        const key = params.get('key');
+
+        $(function () {
+            $('form').submit(function () {
+                const name    = $('input[name="name"]').val();
+                const udetate = $('input[name="udetate"]').val();
+                const fukkin  = $('input[name="fukkin"]').val();
+                const haikin  = $('input[name="haikin"]').val();
+                const sukuwat = $('input[name="sukuwat"]').val();
+                const msg = `${name}\n${udetate}\n${fukkin}\n${haikin}\n${sukuwat}`;
+                sendText(msg);
+                return false;
+            });
+        });
+
+    </script>
+</body>
+</html>
